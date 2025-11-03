@@ -1,0 +1,41 @@
+name: Code Analysis and Email Report
+
+on:
+  push:
+    branches:
+      - main # Assurez-vous que c'est le nom de votre branche principale
+
+jobs:
+  analyze_and_report:
+    runs-on: ubuntu-latest
+    
+    # Condition pour s'assurer que le job ne s'exécute que sur le push de la branche principale
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        # fetch-depth: 0 est crucial pour récupérer l'historique complet et identifier les fichiers modifiés
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run analysis and send email
+        env:
+          # Les secrets sont chargés ici comme variables d'environnement pour le script Python
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          
+          # Informations de l'événement transmises au script
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_AUTHOR_EMAIL: ${{ github.event.pusher.email }}
+          
+        run: python src/analyze_and_email.py
