@@ -1,0 +1,28 @@
+<title>Page de Test avec Erreurs</title>
+<H1 style="color: blue;">Bienvenue sur la page de test</H1>
+<p>Ceci est un paragraphe de test.
+<p>Ceci est un second paragraphe sans balise de fermeture pour le premier.
+
+<div class="contenu">
+    <a href="http://example.com">Cliquez ici
+</div>
+
+<center>
+    <font color="red">Texte centré et en rouge (balises dépréciées )</font>
+</center>
+
+<script>
+    // Un bug simple en JavaScript
+    var x = 5;
+    var y = "10";
+    var z = x + y; // z sera "510" au lieu de 15 (erreur de type)
+    
+    function calculate(a, b) {
+        return a * b;
+    }
+    
+    // Variable globale non déclarée (mauvaise pratique)
+    global_var = calculate(3, 4);
+</script>
+
+<!-- Commentaire: La balise </body> et </html> sont manquantes -->
